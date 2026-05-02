@@ -194,19 +194,16 @@ http://localhost:3000
 ```
 
 ---
-
 ## 📸 Screenshots
 
-> Add screenshots here (Dashboard, Login, Complaint Page)
+<p align="center">
+  <img src="screenshots/dashboard.png" width="800"/>
+</p>
 
-Example:
-
-```
-/screenshots/dashboard.png
-/screenshots/login.png
-```
-
----
+<p align="center">
+  <img src="screenshots/login.png" width="400"/>
+  <img src="screenshots/complaints.png" width="400"/>
+</p>
 
 ## 🚧 Future Improvements
 
