@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMS Portal</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ── Sidebar ──────────────────────────────────────────── -->
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="logo-text">
+      <div class="logo-title">CMS Portal</div>
+      <div class="logo-sub">Chandigarh University</div>
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Main</span>
+    <div class="nav-item active" onclick="showPage('dashboard')" id="nav-dashboard">
+      <span class="nav-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      </span>
+      Dashboard
+    </div>
+    <div class="nav-item" onclick="showPage('complaints')" id="nav-complaints">
+      <span class="nav-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </span>
+      Complaints
+    </div>
+    <div class="nav-item" onclick="showPage('submit')" id="nav-submit" style="display:none;">
+      <span class="nav-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </span>
+      Submit Complaint
+    </div>
+    <div class="nav-item" onclick="showPage('analytics')" id="nav-analytics">
+      <span class="nav-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </span>
+      Analytics
+    </div>
+    <div class="nav-item" onclick="showPage('students')" id="nav-students">
+      <span class="nav-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </span>
+      Students
+    </div>
+  </div>
+
+  <div class="nav-group" id="admin-nav-group">
+    <span class="nav-group-label">Admin</span>
+    <div class="nav-item" onclick="showPage('audit')" id="nav-audit">
+      <span class="nav-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </span>
+      Audit Log
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="user-avatar" id="user-avatar">?</div>
+      <div>
+        <div class="user-name" id="user-name-display">—</div>
+        <div class="user-role" id="user-role-display">—</div>
+      </div>
+      <button class="logout-btn-small" onclick="logout()" title="Sign out">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- ── Main wrapper ──────────────────────────────────────── -->
+<div id="main-wrapper">
+
+  <!-- Topbar -->
+  <header id="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="topbar-right">
+      <div class="role-chip" id="role-chip"></div>
+    </div>
+  </header>
+
+  <!-- ── Dashboard ──────────────────────────────────────── -->
+  <main class="page active" id="page-dashboard">
+    <div class="page-header">
+      <h2>Overview</h2>
+      <p>Summary of all complaints across departments</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card stat-total">
+        <div class="stat-icon" style="background:#f1f5f9;">📋</div>
+        <div class="stat-num" id="stat-total">—</div>
+        <div class="stat-label">Total Complaints</div>
+      </div>
+      <div class="stat-card stat-pending">
+        <div class="stat-icon" style="background:#fffbeb;">⏳</div>
+        <div class="stat-num" id="stat-pending">—</div>
+        <div class="stat-label">Pending</div>
+      </div>
+      <div class="stat-card stat-progress">
+        <div class="stat-icon" style="background:#eff6ff;">🔄</div>
+        <div class="stat-num" id="stat-progress">—</div>
+        <div class="stat-label">In Progress</div>
+      </div>
+      <div class="stat-card stat-resolved">
+        <div class="stat-icon" style="background:#f0fdf4;">✅</div>
+        <div class="stat-num" id="stat-resolved">—</div>
+        <div class="stat-label">Resolved</div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Status Breakdown</span>
+        </div>
+        <div class="chart-box"><canvas id="chart-status"></canvas></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Priority Distribution</span>
+        </div>
+        <div class="chart-box"><canvas id="chart-priority"></canvas></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Complaints ──────────────────────────────────────── -->
+  <main class="page" id="page-complaints">
+    <div class="page-header">
+      <h2 id="complaints-heading">Complaints</h2>
+      <p id="complaints-subheading">View and manage all submitted complaints</p>
+    </div>
+
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" id="search-input" type="text" placeholder="Search by student or department…" oninput="filterComplaints()">
+      </div>
+      <select class="filter-select" id="filter-status" onchange="filterComplaints()">
+        <option value="">All Statuses</option>
+        <option>Pending</option>
+        <option>In Progress</option>
+        <option>Resolved</option>
+      </select>
+      <select class="filter-select" id="filter-priority" onchange="filterComplaints()">
+        <option value="">All Priorities</option>
+        <option>High</option>
+        <option>Medium</option>
+        <option>Low</option>
+      </select>
+      <select class="filter-select" id="filter-dept" onchange="filterComplaints()">
+        <option value="">All Departments</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Student</th>
+            <th>Department</th>
+            <th>Category</th>
+            <th>Complaint</th>
+            <th>Priority</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th id="th-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="complaints-tbody"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- ── Submit Complaint ─────────────────────────────────── -->
+  <main class="page" id="page-submit">
+    <div class="page-header">
+      <h2>Submit a Complaint</h2>
+      <p>Describe your issue and we'll route it to the right department</p>
+    </div>
+
+    <div class="form-card">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-student">Student</label>
+          <select class="form-control" id="f-student">
+            <option value="">Select student</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="f-dept">Department</label>
+          <select class="form-control" id="f-dept">
+            <option value="">Select department</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-category">Category</label>
+          <select class="form-control" id="f-category">
+            <option value="">Select category</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Priority</label>
+          <div class="priority-selector">
+            <button class="priority-opt" data-p="High"   onclick="selectPriority('High')">🔴 High</button>
+            <button class="priority-opt selected-medium" data-p="Medium" onclick="selectPriority('Medium')">🟡 Medium</button>
+            <button class="priority-opt" data-p="Low"    onclick="selectPriority('Low')">🟢 Low</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="f-desc">Description</label>
+        <textarea class="form-control" id="f-desc" placeholder="Describe the issue in detail…" maxlength="500" oninput="updateCharCount()"></textarea>
+        <div class="char-count"><span id="char-count">0</span> / 500</div>
+      </div>
+
+      <!-- File attachment -->
+      <div class="form-group">
+        <label>Attachment <span style="color:var(--text-3);font-weight:400;">(optional)</span></label>
+        <input type="file" id="f-file" style="display:none;" onchange="handleFileSelect(event)"
+               accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.txt">
+        <div class="file-drop-zone" onclick="triggerFileInput()">
+          <div class="file-drop-icon">📎</div>
+          <div class="file-drop-text">Click to attach a file</div>
+          <div class="file-drop-sub">JPG, PNG, PDF, DOC or TXT · Max 5MB</div>
+        </div>
+        <div class="file-preview" id="file-preview" style="display:none;">
+          <span class="file-preview-icon" id="file-icon">📄</span>
+          <div class="file-preview-info">
+            <div class="file-preview-name" id="file-name">—</div>
+            <div class="file-preview-size" id="file-size">—</div>
+          </div>
+          <button class="file-remove-btn" onclick="clearFile()" title="Remove file">✕</button>
+        </div>
+      </div>
+
+      <button class="submit-btn" id="submit-btn" onclick="submitComplaint()">Submit Complaint</button>
+    </div>
+  </main>
+
+  <!-- ── Analytics ──────────────────────────────────────── -->
+  <main class="page" id="page-analytics">
+    <div class="page-header">
+      <h2>Analytics</h2>
+      <p>Complaint trends, department breakdown, and resolution insights</p>
+    </div>
+
+    <div class="panel analytics-full">
+      <div class="panel-header">
+        <span class="panel-title">Complaint Trend — Last 14 Days</span>
+      </div>
+      <div class="chart-box"><canvas id="chart-trend"></canvas></div>
+    </div>
+
+    <div class="analytics-grid">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">By Department</span>
+        </div>
+        <div id="dept-breakdown"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">By Category</span>
+        </div>
+        <div class="chart-box"><canvas id="chart-category"></canvas></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Resolution Rate</span>
+        </div>
+        <div id="resolution-display" style="padding-top:8px;">
+          <div id="resolution-rate-label" style="font-size:32px;font-weight:800;font-family:'Manrope',sans-serif;color:var(--text);">—%</div>
+          <div style="font-size:13px;color:var(--text-2);margin-top:4px;">of all complaints resolved</div>
+          <div class="resolution-bar" style="margin-top:14px;"><div class="resolution-fill" id="resolution-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Priority Breakdown</span>
+        </div>
+        <div class="chart-box"><canvas id="chart-priority-2"></canvas></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Students ────────────────────────────────────────── -->
+  <main class="page" id="page-students">
+    <div class="page-header">
+      <h2>Students</h2>
+      <p>All registered students and their complaint history</p>
+    </div>
+    <div class="students-grid" id="students-grid"></div>
+  </main>
+
+  <!-- ── Audit Log ───────────────────────────────────────── -->
+  <main class="page" id="page-audit">
+    <div class="page-header">
+      <h2>Audit Log</h2>
+      <p>Track all admin actions and complaint changes</p>
+    </div>
+    <div class="panel">
+      <div id="audit-list"></div>
+    </div>
+  </main>
+
+</div><!-- end main-wrapper -->
+
+<!-- Toast container -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
